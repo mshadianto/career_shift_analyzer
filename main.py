@@ -1023,16 +1023,18 @@ def main():
         *Based on job market analysis*
         """)
     
-    # Add disclaimer before footer
     st.markdown("""
-    <div class="disclaimer-banner">
-        ⚠️ <strong>Disclaimer:</strong> All career guidance, salary data, and AI recommendations are for informational purposes only. 
-        Individual results may vary. Always verify information with professional sources and consult qualified career counselors for personalized advice.
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Enhanced footer with comprehensive disclaimers
-    render_universal_footer()
+<div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px; margin-top: 2rem;">
+    <h4>⚠️ Important Disclaimer</h4>
+    <p><strong>This platform provides general career guidance for educational purposes only.</strong></p>
+    <p>Not a substitute for professional career counseling. AI responses may contain errors.</p>
+    <p>Always verify information independently and consult qualified professionals.</p>
+    <hr style="border-color: rgba(255,255,255,0.3); margin: 1.5rem 0;">
+    <p><strong>© 2025 Career Shift Analyzer Pro</strong></p>
+    <p>👥 Developed by <strong>MS Hadianto</strong> & <strong>Faby</strong></p>
+    <p>🌟 <a href="https://github.com/mshadianto/career_shift_analyzer" style="color: #ffd700;">View on GitHub</a></p>
+</div>
+""", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
