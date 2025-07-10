@@ -12,74 +12,123 @@ st.set_page_config(
     layout="wide"
 )
 
-# Enhanced Custom CSS for Chat Interface
+# Dark Purple Neon Sci-Fi Theme CSS (consistent with main theme)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
     
-    * {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Global Dark Theme */
+    .stApp {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a0e2e 25%, #2d1b3d 50%, #1a0e2e 75%, #0a0a0a 100%);
+        color: #e0e0ff;
+    }
+    
+    /* Animated Background */
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(139, 69, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 69, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(69, 139, 255, 0.1) 0%, transparent 50%);
+        animation: nebula 10s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    @keyframes nebula {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
     }
     
     .chat-header {
         text-align: center;
         padding: 3rem 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        color: white;
+        background: linear-gradient(135deg, rgba(139, 69, 255, 0.2), rgba(255, 69, 255, 0.2));
+        border: 2px solid #8b45ff;
         border-radius: 20px;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 
+            0 0 30px rgba(139, 69, 255, 0.5),
+            inset 0 0 30px rgba(139, 69, 255, 0.1);
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(10px);
     }
     
     .chat-header::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        animation: shine 3s infinite;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(139, 69, 255, 0.1), transparent);
+        animation: scan 4s linear infinite;
     }
     
-    @keyframes shine {
-        0% { left: -100%; }
-        100% { left: 100%; }
+    @keyframes scan {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .chat-header h1 {
+        font-family: 'Orbitron', monospace;
+        font-weight: 900;
+        text-shadow: 
+            0 0 10px #8b45ff,
+            0 0 20px #8b45ff,
+            0 0 30px #8b45ff;
+        animation: glow 2s ease-in-out infinite alternate;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    @keyframes glow {
+        from { text-shadow: 0 0 10px #8b45ff, 0 0 20px #8b45ff, 0 0 30px #8b45ff; }
+        to { text-shadow: 0 0 20px #8b45ff, 0 0 30px #8b45ff, 0 0 40px #8b45ff; }
     }
     
     .chat-container {
-        background: white;
+        background: linear-gradient(145deg, rgba(13, 13, 13, 0.9), rgba(26, 14, 46, 0.9));
+        border: 1px solid #8b45ff;
         border-radius: 20px;
         padding: 2rem;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        box-shadow: 0 0 25px rgba(139, 69, 255, 0.3);
         margin: 2rem 0;
-        border: 2px solid rgba(102, 126, 234, 0.1);
         min-height: 600px;
         display: flex;
         flex-direction: column;
+        backdrop-filter: blur(10px);
     }
     
     .message-user {
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, #8b45ff, #ff45ff);
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 20px 20px 5px 20px;
         margin: 0.5rem 0 0.5rem 4rem;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 0 15px rgba(139, 69, 255, 0.4);
         animation: slideInRight 0.3s ease;
+        font-family: 'Exo 2', sans-serif;
     }
     
     .message-assistant {
-        background: linear-gradient(145deg, #f8f9ff, #e8f0fe);
-        color: #333;
+        background: linear-gradient(145deg, rgba(139, 69, 255, 0.1), rgba(255, 69, 255, 0.1));
+        color: #e0e0ff;
         padding: 1rem 1.5rem;
         border-radius: 20px 20px 20px 5px;
         margin: 0.5rem 4rem 0.5rem 0;
-        border-left: 4px solid #667eea;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-left: 4px solid #00ff88;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
         animation: slideInLeft 0.3s ease;
+        font-family: 'Exo 2', sans-serif;
+        border: 1px solid rgba(139, 69, 255, 0.2);
     }
     
     @keyframes slideInRight {
@@ -95,11 +144,12 @@ st.markdown("""
     .chat-input-container {
         position: sticky;
         bottom: 0;
-        background: white;
+        background: linear-gradient(145deg, rgba(13, 13, 13, 0.95), rgba(26, 14, 46, 0.95));
         padding: 1.5rem;
         border-radius: 15px;
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 -5px 20px rgba(139, 69, 255, 0.2);
         margin-top: auto;
+        border: 1px solid rgba(139, 69, 255, 0.3);
     }
     
     .suggested-prompts {
@@ -110,20 +160,22 @@ st.markdown("""
     }
     
     .prompt-chip {
-        background: rgba(102, 126, 234, 0.1);
-        color: #667eea;
+        background: rgba(139, 69, 255, 0.2);
+        color: #8b45ff;
         padding: 0.5rem 1rem;
         border-radius: 20px;
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        border: 1px solid rgba(139, 69, 255, 0.3);
         cursor: pointer;
         transition: all 0.3s ease;
         font-size: 0.9em;
+        font-family: 'Exo 2', sans-serif;
     }
     
     .prompt-chip:hover {
-        background: rgba(102, 126, 234, 0.2);
+        background: rgba(139, 69, 255, 0.3);
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 0 15px rgba(139, 69, 255, 0.4);
+        color: #ff45ff;
     }
     
     .feature-grid {
@@ -134,34 +186,62 @@ st.markdown("""
     }
     
     .feature-card {
-        background: linear-gradient(145deg, #ffffff, #f8f9ff);
+        background: linear-gradient(145deg, rgba(13, 13, 13, 0.9), rgba(26, 14, 46, 0.9));
         padding: 2rem;
         border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border-left: 5px solid #667eea;
+        box-shadow: 0 0 20px rgba(139, 69, 255, 0.3);
+        border: 1px solid #8b45ff;
         transition: all 0.3s ease;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(139, 69, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .feature-card:hover::before {
+        left: 100%;
     }
     
     .feature-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        border-color: #ff45ff;
+        box-shadow: 0 10px 30px rgba(255, 69, 255, 0.4);
+    }
+    
+    .feature-card h4 {
+        color: #ff45ff;
+        font-family: 'Orbitron', monospace;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
     }
     
     .typing-indicator {
         display: inline-flex;
         align-items: center;
         padding: 1rem 1.5rem;
-        background: #f0f2f6;
+        background: rgba(139, 69, 255, 0.1);
         border-radius: 20px 20px 20px 5px;
         margin: 0.5rem 4rem 0.5rem 0;
+        border: 1px solid rgba(139, 69, 255, 0.3);
     }
     
     .typing-dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #667eea;
+        background: #8b45ff;
         margin: 0 2px;
         animation: typing 1.4s infinite ease-in-out;
     }
@@ -178,10 +258,11 @@ st.markdown("""
         display: inline-block;
         width: 10px;
         height: 10px;
-        background: #28a745;
+        background: #00ff88;
         border-radius: 50%;
         margin-right: 0.5rem;
         animation: pulse 2s infinite;
+        box-shadow: 0 0 10px #00ff88;
     }
     
     @keyframes pulse {
@@ -191,24 +272,75 @@ st.markdown("""
     }
     
     .error-message {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
+        background: rgba(255, 69, 69, 0.2);
+        color: #ff4545;
+        border: 1px solid rgba(255, 69, 69, 0.3);
         border-radius: 10px;
         padding: 1rem;
         margin: 1rem 0;
     }
     
     .success-message {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+        border: 1px solid rgba(0, 255, 136, 0.3);
         border-radius: 10px;
         padding: 1rem;
         margin: 1rem 0;
     }
     
-    /* Responsive design */
+    /* Text Elements */
+    h1, h2, h3, h4 {
+        font-family: 'Orbitron', monospace;
+        color: #e0e0ff;
+    }
+    
+    p, span, div {
+        font-family: 'Exo 2', sans-serif;
+        color: #c0c0ff;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #8b45ff, #ff45ff);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-family: 'Exo 2', sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(139, 69, 255, 0.4);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 69, 255, 0.5);
+    }
+    
+    /* Sidebar */
+    .css-1d391kg {
+        background: linear-gradient(180deg, rgba(13, 13, 13, 0.95), rgba(26, 14, 46, 0.95));
+        border-right: 1px solid #8b45ff;
+    }
+    
+    /* Form elements */
+    .stTextArea > div > div > textarea {
+        background: rgba(13, 13, 13, 0.8);
+        color: #e0e0ff;
+        border: 1px solid #8b45ff;
+        border-radius: 10px;
+        font-family: 'Exo 2', sans-serif;
+    }
+    
+    .stTextArea > div > div > textarea:focus {
+        border-color: #ff45ff;
+        box-shadow: 0 0 10px rgba(255, 69, 255, 0.3);
+    }
+    
+    /* Responsive */
     @media (max-width: 768px) {
         .message-user, .message-assistant {
             margin-left: 1rem;
@@ -228,7 +360,7 @@ st.markdown("""
 
 # Configuration for OpenRouter API (Llama 3.2)
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY", "")  # Set this in your Streamlit secrets
+OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY", "")
 
 # Career-focused system prompt
 SYSTEM_PROMPT = """You are an expert AI Career Advisor specializing in emerging technology fields including AI, Blockchain, Cybersecurity, Data Science, and Cloud Computing. Your role is to provide:
@@ -270,7 +402,7 @@ def get_ai_response(user_message: str, conversation_history: List[Dict]) -> str:
         
         # API request payload
         payload = {
-            "model": "meta-llama/llama-3.2-90b-vision-instruct:free",  # Free Llama 3.2 model
+            "model": "meta-llama/llama-3.2-90b-vision-instruct:free",
             "messages": messages,
             "max_tokens": 1000,
             "temperature": 0.7,
@@ -358,17 +490,6 @@ def show_suggested_prompts():
     st.markdown('</div>', unsafe_allow_html=True)
     return None
 
-def show_typing_indicator():
-    """Show typing indicator while AI is responding"""
-    st.markdown("""
-    <div class="typing-indicator">
-        <span style="margin-right: 0.5rem;">AI is thinking</span>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-    </div>
-    """, unsafe_allow_html=True)
-
 def main():
     """Main function for Career Chat Assistant"""
     
@@ -378,11 +499,11 @@ def main():
     # Header
     st.markdown("""
     <div class="chat-header">
-        <h1 style="margin: 0; font-size: 2.8em; font-weight: 700;">🤖 AI Career Assistant</h1>
-        <p style="font-size: 1.3em; margin: 1rem 0; opacity: 0.9;">
+        <h1 style="font-size: 2.8em; font-weight: 900;">🤖 AI CAREER ASSISTANT</h1>
+        <p style="font-size: 1.3em; margin: 1rem 0; opacity: 0.9; position: relative; z-index: 1;">
             Your Personal AI Career Advisor
         </p>
-        <p style="font-size: 1em; margin: 0.5rem 0; opacity: 0.8;">
+        <p style="font-size: 1em; margin: 0.5rem 0; opacity: 0.8; position: relative; z-index: 1;">
             <span class="status-indicator"></span>
             Powered by Meta Llama 3.2 • Available 24/7 • Expert Career Guidance
         </p>
@@ -456,19 +577,19 @@ def main():
         st.markdown("""
         <div class="feature-grid">
             <div class="feature-card">
-                <h4 style="color: #667eea; margin-bottom: 1rem;">🎯 Personalized Advice</h4>
+                <h4>🎯 Personalized Advice</h4>
                 <p>Tailored recommendations based on your background, goals, and current market trends.</p>
             </div>
             <div class="feature-card">
-                <h4 style="color: #667eea; margin-bottom: 1rem;">📊 Real-time Data</h4>
+                <h4>📊 Real-time Data</h4>
                 <p>Up-to-date salary information, job market trends, and skill demand analysis.</p>
             </div>
             <div class="feature-card">
-                <h4 style="color: #667eea; margin-bottom: 1rem;">🛣️ Learning Roadmaps</h4>
+                <h4>🛣️ Learning Roadmaps</h4>
                 <p>Step-by-step learning paths with specific resources and timeline recommendations.</p>
             </div>
             <div class="feature-card">
-                <h4 style="color: #667eea; margin-bottom: 1rem;">💡 Interview Prep</h4>
+                <h4>💡 Interview Prep</h4>
                 <p>Technical interview questions, coding challenges, and behavioral interview guidance.</p>
             </div>
         </div>
@@ -569,7 +690,7 @@ def main():
                 # Get AI response
                 conversation_history = [
                     {"role": msg["role"], "content": msg["content"]} 
-                    for msg in st.session_state.messages[:-1]  # Exclude the current message
+                    for msg in st.session_state.messages[:-1]
                 ]
                 
                 ai_response = get_ai_response(user_input.strip(), conversation_history)
@@ -628,22 +749,6 @@ def main():
             st.metric("Total Messages", total_messages)
             st.metric("Your Questions", user_messages)
             st.metric("AI Responses", total_messages - user_messages)
-    
-    st.markdown("---")
-    
-    # Method 1: Direct simple footer (temporary fix)
-    st.markdown("""
-    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px; margin-top: 2rem;">
-        <h4>⚠️ Important Disclaimer</h4>
-        <p><strong>This platform provides general career guidance for educational purposes only.</strong></p>
-        <p>Not a substitute for professional career counseling. AI responses may contain errors.</p>
-        <p>Always verify information independently and consult qualified professionals.</p>
-        <hr style="border-color: rgba(255,255,255,0.3); margin: 1.5rem 0;">
-        <p><strong>© 2025 Career Shift Analyzer Pro</strong></p>
-        <p>👥 Developed by <strong>MS Hadianto</strong> & <strong>Faby</strong></p>
-        <p>🌟 <a href="https://github.com/mshadianto/career_shift_analyzer" style="color: #ffd700;">View on GitHub</a></p>
-    </div>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
