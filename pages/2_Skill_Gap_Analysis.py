@@ -2,540 +2,436 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import numpy as np
+from datetime import datetime
 
-st.set_page_config(page_title="Skill Gap Analysis", layout="wide")
-st.title("📊 Skill Gap Analysis")
-st.markdown("""
-Bandingkan skill yang Anda miliki dengan skill yang dibutuhkan di industri masa depan.
-Dapatkan analisis mendalam dan roadmap pembelajaran yang personal! 🎯
-""")
-
-# Enhanced skill mapping with more details
-skill_targets = {
-    "Artificial Intelligence": {
-        "technical": ["python", "tensorflow", "pytorch", "machine learning", "deep learning", "sql", "statistics"],
-        "soft": ["problem solving", "critical thinking", "research"],
-        "tools": ["jupyter", "git", "docker", "aws", "google cloud"],
-        "salary_range": "$80,000 - $180,000",
-        "growth_rate": "22% (Much faster than average)"
-    },
-    "Blockchain & Web3": {
-        "technical": ["solidity", "smart contracts", "cryptography", "defi", "nft", "ethereum", "javascript"],
-        "soft": ["attention to detail", "security mindset", "innovation"],
-        "tools": ["remix", "truffle", "metamask", "hardhat"],
-        "salary_range": "$90,000 - $200,000",
-        "growth_rate": "35% (Extremely fast growth)"
-    },
-    "Renewable Energy": {
-        "technical": ["solar technology", "wind energy", "energy storage", "electrical engineering", "sustainability"],
-        "soft": ["environmental awareness", "project management", "collaboration"],
-        "tools": ["autocad", "matlab", "pvsyst", "homer"],
-        "salary_range": "$65,000 - $120,000",
-        "growth_rate": "8% (Much faster than average)"
-    },
-    "Biotechnology": {
-        "technical": ["bioinformatics", "genetics", "molecular biology", "lab techniques", "data analysis"],
-        "soft": ["attention to detail", "patience", "scientific method"],
-        "tools": ["r", "python", "blast", "laboratory equipment"],
-        "salary_range": "$70,000 - $140,000",
-        "growth_rate": "7% (Faster than average)"
-    },
-    "Space Technology": {
-        "technical": ["aerospace engineering", "physics", "mathematics", "navigation", "satellite technology"],
-        "soft": ["precision", "teamwork", "problem solving"],
-        "tools": ["matlab", "simulink", "cad software", "mission planning"],
-        "salary_range": "$85,000 - $160,000",
-        "growth_rate": "6% (As fast as average, but high impact)"
-    },
-    "Cybersecurity": {
-        "technical": ["network security", "penetration testing", "incident response", "risk assessment", "compliance"],
-        "soft": ["analytical thinking", "continuous learning", "communication"],
-        "tools": ["wireshark", "metasploit", "nmap", "burp suite"],
-        "salary_range": "$75,000 - $150,000",
-        "growth_rate": "35% (Much faster than average)"
-    }
-}
-
-# Sidebar for field selection
-st.sidebar.header("🎯 Pilih Bidang Karir")
-selected_field = st.sidebar.selectbox(
-    "Industri masa depan:",
-    list(skill_targets.keys()),
-    help="Pilih bidang yang ingin Anda analisis"
+# Page config
+st.set_page_config(
+    page_title="Skill Gap Analysis",
+    page_icon="📊",
+    layout="wide"
 )
 
-# Display field info
-field_data = skill_targets[selected_field]
-st.sidebar.markdown(f"""
-### 📈 Info Industri
-**💰 Salary Range:** {field_data['salary_range']}  
-**📊 Growth Rate:** {field_data['growth_rate']}
-""")
-
-# Main content
-col1, col2 = st.columns([2, 1])
-
-with col1:
-    st.subheader(f"🔍 Analisis untuk {selected_field}")
-    
-    # Skill input
-    skills_user = st.text_area(
-        "Masukkan skill yang Anda miliki (pisahkan dengan koma):",
-        placeholder="Contoh: python, teamwork, excel, problem solving, git",
-        help="Tulis semua skill Anda, baik technical maupun soft skills"
-    )
-
-with col2:
-    st.subheader("💡 Tips Input")
-    st.info("""
-    **Include both:**
-    - Technical skills (programming, tools)
-    - Soft skills (communication, leadership)
-    - Tools & platforms you've used
-    """)
-
-if st.button("🔎 Lihat Analisis Skill Gap", type="primary"):
-    if skills_user.strip():
-        user_skills = [s.strip().lower() for s in skills_user.split(",")]
-        
-        # Combine all required skills
-        all_required = field_data["technical"] + field_data["soft"] + field_data["tools"]
-        
-        # Calculate matches
-        technical_match = [s for s in user_skills if s in [skill.lower() for skill in field_data["technical"]]]
-        soft_match = [s for s in user_skills if s in [skill.lower() for skill in field_data["soft"]]]
-        tools_match = [s in user_skills if s in [skill.lower() for skill in field_data["tools"]]]
-        
-        # Calculate gaps
-        technical_gap = [s for s in field_data["technical"] if s.lower() not in [skill.lower() for skill in user_skills]]
-        soft_gap = [s for s in field_data["soft"] if s.lower() not in [skill.lower() for skill in user_skills]]
-        tools_gap = [s for s in field_data["tools"] if s.lower() not in [skill.lower() for skill in user_skills]]
-        
-        # Overall score
-        total_required = len(all_required)
-        total_matched = len(technical_match) + len(soft_match) + len(tools_match)
-        skill_percentage = (total_matched / total_required * 100) if total_required > 0 else 0
-        
-        # Results section
-        st.markdown("---")
-        st.subheader("📊 Hasil Analisis")
-        
-        # Score display
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("📈 Overall Score", f"{skill_percentage:.1f}%")
-        with col2:
-            st.metric("✅ Skills Matched", f"{total_matched}/{total_required}")
-        with col3:
-            st.metric("🔧 Technical Skills", f"{len(technical_match)}/{len(field_data['technical'])}")
-        with col4:
-            st.metric("🤝 Soft Skills", f"{len(soft_match)}/{len(field_data['soft'])}")
-        
-        # Progress bar
-        st.progress(skill_percentage / 100)
-        
-        # Detailed breakdown
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.subheader("✅ Skills yang Sudah Dimiliki")
-            if technical_match:
-                st.success("**🔧 Technical Skills:**")
-                for skill in technical_match:
-                    st.write(f"• {skill.title()}")
-            
-            if soft_match:
-                st.success("**🤝 Soft Skills:**")
-                for skill in soft_match:
-                    st.write(f"• {skill.title()}")
-            
-            if tools_match:
-                st.success("**🛠️ Tools:**")
-                for skill in tools_match:
-                    st.write(f"• {skill.title()}")
-        
-        with col2:
-            st.subheader("❌ Skills yang Perlu Dipelajari")
-            if technical_gap:
-                st.error("**🔧 Technical Skills:**")
-                for skill in technical_gap:
-                    st.write(f"• {skill.title()}")
-            
-            if soft_gap:
-                st.error("**🤝 Soft Skills:**")
-                for skill in soft_gap:
-                    st.write(f"• {skill.title()}")
-            
-            if tools_gap:
-                st.error("**🛠️ Tools:**")
-                for skill in tools_gap:
-                    st.write(f"• {skill.title()}")
-        
-        # Radar chart
-        if total_required > 0:
-            st.subheader("🎯 Skill Radar Chart")
-            
-            categories = ['Technical', 'Soft Skills', 'Tools']
-            current_scores = [
-                len(technical_match) / len(field_data["technical"]) * 100 if field_data["technical"] else 0,
-                len(soft_match) / len(field_data["soft"]) * 100 if field_data["soft"] else 0,
-                len(tools_match) / len(field_data["tools"]) * 100 if field_data["tools"] else 0
-            ]
-            target_scores = [100, 100, 100]
-            
-            fig = go.Figure()
-            
-            fig.add_trace(go.Scatterpolar(
-                r=current_scores,
-                theta=categories,
-                fill='toself',
-                name='Current Level',
-                line_color='rgb(0, 123, 255)'
-            ))
-            
-            fig.add_trace(go.Scatterpolar(
-                r=target_scores,
-                theta=categories,
-                fill='toself',
-                name='Target Level',
-                line_color='rgb(255, 99, 132)',
-                opacity=0.3
-            ))
-            
-            fig.update_layout(
-                polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0, 100]
-                    )),
-                showlegend=True,
-                title="Skill Level Comparison"
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-        
-        # Learning recommendations
-        st.subheader("🎓 Rekomendasi Learning Path")
-        
-        priority_skills = technical_gap[:3] + soft_gap[:2] + tools_gap[:2]
-        
-        if priority_skills:
-            st.info("**🚀 Priority Skills to Learn (Top recommendations):**")
-            
-            learning_resources = {
-                "python": "https://www.codecademy.com/learn/learn-python-3",
-                "machine learning": "https://www.coursera.org/learn/machine-learning",
-                "javascript": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
-                "solidity": "https://cryptozombies.io/",
-                "problem solving": "https://www.coursera.org/learn/creative-problem-solving",
-                "git": "https://learngitbranching.js.org/"
-            }
-            
-            for i, skill in enumerate(priority_skills[:5], 1):
-                resource_url = learning_resources.get(skill.lower(), f"https://www.coursera.org/search?query={skill}")
-                st.markdown(f"**{i}. {skill.title()}** → [📚 Learn Here]({resource_url})")
-        else:
-            st.success("🎉 Congratulations! You have all the essential skills for this field!")
-            st.balloons()
-    
-    else:
-        st.warning("⚠️ Please enter your skills to get analysis.")
-
-st.markdown("---")
-st.caption("© 2025 Career Shift Analyzer | Data based on industry research and job market trends")
-
-# footer_component.py - Universal Footer for All Pages
-# Place this code at the bottom of EVERY page file
-
-import streamlit as st
-from datetime import datetime
-import os
-
-def render_universal_footer():
-    """Universal Footer Component with Team Credits and Disclaimer"""
-    
-    def get_app_version():
-        """Get app version dynamically"""
-        try:
-            env_version = os.getenv('APP_VERSION')
-            if env_version:
-                return env_version
-            base_version = "1.4"
-            build_number = datetime.now().strftime("%y%m%d")
-            return f"{base_version}.{build_number}"
-        except:
-            return "1.0.0"
-    
-    version = get_app_version()
-    current_year = datetime.now().year
-    last_updated = datetime.now().strftime("%B %d, %Y")
-    
-    # Universal Footer CSS
-    st.markdown("""
-    <style>
-    .universal-footer {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+# Custom CSS
+st.markdown("""
+<style>
+    .main-header {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
         color: white;
-        padding: 2rem 1rem;
-        border-radius: 15px;
-        margin-top: 3rem;
-        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
-        backdrop-filter: blur(10px);
-    }
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
-    }
-    .footer-section h4 {
-        color: #ffd700;
-        margin-bottom: 1rem;
-        font-size: 1.1em;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .disclaimer-box {
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        font-size: 0.85em;
-        backdrop-filter: blur(5px);
-    }
-    .team-section {
-        background: rgba(255,255,255,0.15);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,215,0,0.3);
-    }
-    .team-members {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin: 1rem 0;
-        flex-wrap: wrap;
-    }
-    .team-member {
-        background: rgba(255,255,255,0.2);
-        padding: 1rem 1.5rem;
         border-radius: 20px;
-        border: 2px solid rgba(255,215,0,0.5);
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        text-align: center;
-        min-width: 140px;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
     }
-    .team-member:hover {
-        transform: translateY(-5px);
-        border-color: #ffd700;
-        box-shadow: 0 10px 25px rgba(255,215,0,0.3);
-        background: rgba(255,255,255,0.25);
-    }
-    .team-member strong {
-        color: #ffd700;
-        font-size: 1em;
-        display: block;
-        margin-bottom: 0.3rem;
-    }
-    .team-member span {
-        font-size: 0.8em;
-        color: rgba(255,255,255,0.9);
-        line-height: 1.2;
-    }
-    .footer-bottom {
-        border-top: 1px solid rgba(255,255,255,0.2);
-        padding-top: 1.5rem;
-        text-align: center;
-        font-size: 0.85em;
-        color: rgba(255,255,255,0.95);
-    }
-    .status-indicator {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: #00ff00;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-        animation: pulse 2s infinite;
-    }
-    .tech-stack {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 0.5rem;
-        margin: 0.5rem 0;
-    }
-    .tech-item {
-        background: rgba(255,255,255,0.1);
-        padding: 0.3rem 0.6rem;
+    
+    .skill-card {
+        background: linear-gradient(145deg, #ffffff, #f8f9ff);
+        padding: 2rem;
         border-radius: 15px;
-        font-size: 0.8em;
-        text-align: center;
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    @keyframes pulse {
-        0% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(1.1); }
-        100% { opacity: 1; transform: scale(1); }
-    }
-    .footer-link {
-        color: #ffd700;
-        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin: 1rem 0;
+        border-left: 5px solid #667eea;
         transition: all 0.3s ease;
     }
-    .footer-link:hover {
-        color: #fff;
-        text-shadow: 0 0 10px #ffd700;
+    
+    .skill-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
     }
-    .version-badge {
-        background: rgba(255,215,0,0.2);
-        color: #ffd700;
-        padding: 0.2rem 0.6rem;
-        border-radius: 12px;
-        font-weight: bold;
-        border: 1px solid rgba(255,215,0,0.3);
+    
+    .metric-card {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        margin: 1rem 0;
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
     }
-    </style>
+    
+    .skill-badge {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        margin: 0.2rem;
+        font-size: 0.9em;
+        font-weight: 500;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+    
+    .skill-badge.missing {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border-color: rgba(220, 53, 69, 0.2);
+    }
+    
+    .recommendation-box {
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        border-left: 6px solid #28a745;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Skill database
+@st.cache_data
+def get_skill_database():
+    """Simple skill database"""
+    return {
+        "Artificial Intelligence": {
+            "core_skills": ["Python", "Machine Learning", "Deep Learning", "Statistics", "Data Science"],
+            "tools": ["TensorFlow", "PyTorch", "Scikit-learn", "Jupyter", "Git"],
+            "soft_skills": ["Problem Solving", "Critical Thinking", "Communication", "Teamwork"],
+            "certifications": ["Google AI", "AWS ML", "TensorFlow Developer"],
+            "growth_rate": 22,
+            "difficulty": "High",
+            "salary_range": "$80K-$180K"
+        },
+        "Blockchain & Web3": {
+            "core_skills": ["Solidity", "Smart Contracts", "Ethereum", "Cryptography", "DeFi"],
+            "tools": ["Remix", "Hardhat", "Web3.js", "MetaMask", "Git"],
+            "soft_skills": ["Security Mindset", "Innovation", "Risk Assessment", "Communication"],
+            "certifications": ["Certified Bitcoin Professional", "Ethereum Developer"],
+            "growth_rate": 35,
+            "difficulty": "Very High",
+            "salary_range": "$90K-$200K"
+        },
+        "Cybersecurity": {
+            "core_skills": ["Network Security", "Penetration Testing", "Risk Assessment", "Incident Response"],
+            "tools": ["Wireshark", "Metasploit", "Nmap", "Kali Linux", "SIEM"],
+            "soft_skills": ["Attention to Detail", "Critical Thinking", "Communication", "Ethics"],
+            "certifications": ["CISSP", "CEH", "Security+", "CISM"],
+            "growth_rate": 35,
+            "difficulty": "High",
+            "salary_range": "$75K-$150K"
+        },
+        "Data Science": {
+            "core_skills": ["Python", "R", "SQL", "Statistics", "Machine Learning"],
+            "tools": ["Pandas", "NumPy", "Tableau", "Power BI", "Jupyter"],
+            "soft_skills": ["Analytical Thinking", "Communication", "Business Acumen", "Curiosity"],
+            "certifications": ["Google Data Analytics", "IBM Data Science", "Microsoft Azure Data"],
+            "growth_rate": 15,
+            "difficulty": "Medium-High",
+            "salary_range": "$70K-$140K"
+        },
+        "Cloud Computing": {
+            "core_skills": ["AWS", "Azure", "DevOps", "Kubernetes", "Docker"],
+            "tools": ["Terraform", "Ansible", "Jenkins", "Git", "Linux"],
+            "soft_skills": ["Problem Solving", "Collaboration", "Continuous Learning", "Innovation"],
+            "certifications": ["AWS Solutions Architect", "Azure Solutions Architect", "Google Cloud"],
+            "growth_rate": 20,
+            "difficulty": "Medium-High",
+            "salary_range": "$70K-$160K"
+        }
+    }
+
+def calculate_skill_match(user_skills, field_skills):
+    """Calculate skill match percentage"""
+    if not field_skills:
+        return 0, [], field_skills
+    
+    user_skills_lower = [skill.lower().strip() for skill in user_skills if skill]
+    field_skills_lower = [skill.lower().strip() for skill in field_skills]
+    
+    matched = [skill for skill in field_skills if skill.lower() in user_skills_lower]
+    missing = [skill for skill in field_skills if skill.lower() not in user_skills_lower]
+    
+    match_percentage = (len(matched) / len(field_skills)) * 100
+    
+    return match_percentage, matched, missing
+
+def create_radar_chart(scores, categories):
+    """Create radar chart for skill categories"""
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatterpolar(
+        r=scores,
+        theta=categories,
+        fill='toself',
+        name='Your Skills',
+        line_color='rgb(102, 126, 234)',
+        fillcolor='rgba(102, 126, 234, 0.3)'
+    ))
+    
+    fig.add_trace(go.Scatterpolar(
+        r=[100] * len(categories),
+        theta=categories,
+        fill='toself',
+        name='Target Level',
+        line_color='rgb(220, 53, 69)',
+        fillcolor='rgba(220, 53, 69, 0.1)'
+    ))
+    
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 100]
+            )
+        ),
+        showlegend=True,
+        title="Skill Assessment Overview",
+        height=400
+    )
+    
+    return fig
+
+def main():
+    # Header
+    st.markdown("""
+    <div class="main-header">
+        <h1 style="margin: 0; font-size: 2.5em; font-weight: 700;">📊 Skill Gap Analysis</h1>
+        <p style="font-size: 1.2em; margin: 1rem 0; opacity: 0.9;">
+            Discover your strengths and identify areas for growth
+        </p>
+    </div>
     """, unsafe_allow_html=True)
     
-    # Footer HTML Content
-    footer_html = f"""
-    <div class="universal-footer">
-        <div class="footer-grid">
-            <!-- App Info Section -->
-            <div class="footer-section">
-                <h4>🚀 Career Shift Analyzer</h4>
-                <p><span class="status-indicator"></span><strong>Status:</strong> Online & Active</p>
-                <p><strong>Version:</strong> <span class="version-badge">v{version}</span></p>
-                <p><strong>Last Updated:</strong> {last_updated}</p>
-                <p><strong>Environment:</strong> Production</p>
-                
-                <div class="team-section">
-                    <h5 style="color: #ffd700; margin-bottom: 1rem; text-align: center;">👥 Development Team</h5>
-                    <div class="team-members">
-                        <div class="team-member">
-                            <strong>🎯 MS Hadianto</strong>
-                            <span>Lead Project &<br>Architecture</span>
-                        </div>
-                        <div class="team-member">
-                            <strong>🤝 Faby</strong>
-                            <span>Co-Lead &<br>Development</span>
-                        </div>
-                    </div>
-                    <p style="text-align: center; font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 1rem;">
-                        <em>Collaborative innovation for career advancement</em>
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Legal Disclaimer Section -->
-            <div class="footer-section">
-                <h4>⚖️ Legal Disclaimer</h4>
-                <div class="disclaimer-box">
-                    <p><strong>⚠️ Important Notice:</strong></p>
-                    <ul style="list-style: none; padding: 0; font-size: 0.85em; line-height: 1.4;">
-                        <li>• Career advice for informational purposes only</li>
-                        <li>• AI responses are automated, not professional counseling</li>
-                        <li>• Salary estimates based on market research, may vary</li>
-                        <li>• Individual results depend on personal circumstances</li>
-                        <li>• Always verify information with official sources</li>
-                        <li>• Not a substitute for professional career counseling</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Privacy & Data Section -->
-            <div class="footer-section">
-                <h4>🔒 Privacy & Data</h4>
-                <div class="disclaimer-box">
-                    <p><strong>🛡️ Data Protection:</strong></p>
-                    <ul style="list-style: none; padding: 0; font-size: 0.85em; line-height: 1.4;">
-                        <li>• No personal data permanently stored</li>
-                        <li>• Chat sessions are temporary & session-based</li>
-                        <li>• Skill assessments processed locally</li>
-                        <li>• Third-party APIs governed by separate policies</li>
-                        <li>• All session data cleared on browser close</li>
-                        <li>• No tracking or analytics cookies</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Technical Stack Section -->
-            <div class="footer-section">
-                <h4>🛠️ Technical Stack</h4>
-                <div class="tech-stack">
-                    <div class="tech-item">🐍 Python 3.11</div>
-                    <div class="tech-item">⚡ Streamlit</div>
-                    <div class="tech-item">📊 Plotly</div>
-                    <div class="tech-item">🤖 Llama 3.2</div>
-                    <div class="tech-item">☁️ Cloud Hosted</div>
-                    <div class="tech-item">📱 Responsive</div>
-                </div>
-                <div style="margin-top: 1rem;">
-                    <p><strong>AI Model:</strong> Meta Llama 3.2 via OpenRouter</p>
-                    <p><strong>Hosting:</strong> Streamlit Cloud Platform</p>
-                    <p><strong>Data Source:</strong> Real-time industry research</p>
-                    <p><strong>Updates:</strong> Continuous deployment</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <p style="font-size: 1em; margin-bottom: 0.8rem;">
-                <strong>© {current_year} Career Shift Analyzer v{version}</strong>
-            </p>
-            <p style="margin: 0.5rem 0; font-size: 0.95em;">
-                <strong>👥 Proudly Developed by:</strong> 
-                <span style="color: #ffd700; font-weight: bold;">MS Hadianto</span> (Lead Project) & 
-                <span style="color: #ffd700; font-weight: bold;">Faby</span> (Co-Lead)
-            </p>
-            <p style="margin: 1rem 0; font-size: 0.8em; line-height: 1.4; color: rgba(255,255,255,0.9);">
-                <em><strong>Legal Notice:</strong> This platform provides general career guidance and educational content. 
-                It is not a substitute for professional career counseling, financial advice, or job placement services. 
-                Users should independently verify all information and consult qualified professionals for personalized advice. 
-                Use of this platform constitutes acceptance of our terms and disclaimer.</em>
-            </p>
-            <p style="margin-top: 1.5rem;">
-                🌟 <strong>Open Source Project</strong> | 
-                <a href="https://github.com/mshadianto/career_shift_analyzer" target="_blank" class="footer-link">
-                    📚 View on GitHub
-                </a> | 
-                <a href="mailto:support@careershiftanalyzer.com" class="footer-link">
-                    📧 Contact Support
-                </a>
-            </p>
-            <p style="margin-top: 0.5rem; font-size: 0.9em; color: #ffd700;">
-                Built with ❤️ for empowering career advancement worldwide
-            </p>
-        </div>
-    </div>
-    """
+    # Load data
+    skill_db = get_skill_database()
     
-    # Render the footer
-    st.markdown("---")  # Separator line
-    st.markdown(footer_html, unsafe_allow_html=True)
+    # Sidebar
+    with st.sidebar:
+        st.header("📋 Your Profile")
+        
+        # Basic info
+        current_role = st.text_input("Current Role", placeholder="e.g., Software Developer")
+        experience_years = st.slider("Years of Experience", 0, 20, 2)
+        
+        # Target field
+        target_field = st.selectbox("Target Career Field:", list(skill_db.keys()))
+        
+        # Skills input
+        st.subheader("Current Skills")
+        user_skills = {}
+        
+        for category in ['core_skills', 'tools', 'soft_skills', 'certifications']:
+            category_name = category.replace('_', ' ').title()
+            st.write(f"**{category_name}:**")
+            
+            field_skills = skill_db[target_field][category]
+            selected_skills = []
+            
+            for skill in field_skills:
+                if st.checkbox(skill, key=f"{category}_{skill}"):
+                    selected_skills.append(skill)
+            
+            user_skills[category] = selected_skills
+        
+        analyze_button = st.button("🔍 Analyze My Skills", type="primary")
+    
+    # Main content
+    if analyze_button:
+        # Calculate scores
+        category_scores = {}
+        category_details = {}
+        
+        for category in ['core_skills', 'tools', 'soft_skills', 'certifications']:
+            user_category_skills = user_skills[category]
+            field_category_skills = skill_db[target_field][category]
+            
+            score, matched, missing = calculate_skill_match(user_category_skills, field_category_skills)
+            category_scores[category] = score
+            category_details[category] = {'matched': matched, 'missing': missing}
+        
+        # Overall score (weighted)
+        weights = {'core_skills': 0.4, 'tools': 0.3, 'soft_skills': 0.2, 'certifications': 0.1}
+        overall_score = sum(category_scores[cat] * weights[cat] for cat in weights.keys())
+        
+        # Results
+        st.header("📈 Analysis Results")
+        
+        # Metrics
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.markdown(f"""
+            <div class="metric-card">
+                <h3>🎯 Overall Readiness</h3>
+                <p style="font-size: 2em; margin: 0; font-weight: bold;">{overall_score:.1f}%</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            level = "Expert" if overall_score >= 80 else "Advanced" if overall_score >= 60 else "Intermediate" if overall_score >= 40 else "Beginner"
+            st.markdown(f"""
+            <div class="metric-card">
+                <h3>📊 Level</h3>
+                <p style="font-size: 1.5em; margin: 0; font-weight: bold;">{level}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            field_data = skill_db[target_field]
+            st.markdown(f"""
+            <div class="metric-card">
+                <h3>📈 Growth Rate</h3>
+                <p style="font-size: 1.5em; margin: 0; font-weight: bold;">+{field_data['growth_rate']}%</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col4:
+            st.markdown(f"""
+            <div class="metric-card">
+                <h3>💰 Salary Range</h3>
+                <p style="font-size: 1.2em; margin: 0; font-weight: bold;">{field_data['salary_range']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Radar chart
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            categories = ['Core Skills', 'Tools', 'Soft Skills', 'Certifications']
+            scores = [category_scores['core_skills'], category_scores['tools'], 
+                     category_scores['soft_skills'], category_scores['certifications']]
+            
+            radar_fig = create_radar_chart(scores, categories)
+            st.plotly_chart(radar_fig, use_container_width=True)
+        
+        with col2:
+            # Progress bars
+            st.subheader("📊 Category Breakdown")
+            for category, display_name in zip(['core_skills', 'tools', 'soft_skills', 'certifications'], 
+                                             ['Core Skills', 'Tools', 'Soft Skills', 'Certifications']):
+                score = category_scores[category]
+                st.metric(display_name, f"{score:.1f}%")
+                st.progress(score / 100)
+        
+        # Detailed breakdown
+        st.header("🔍 Detailed Skill Analysis")
+        
+        for category, display_name in zip(['core_skills', 'tools', 'soft_skills', 'certifications'], 
+                                         ['Core Skills', 'Tools', 'Soft Skills', 'Certifications']):
+            with st.expander(f"{display_name} - {category_scores[category]:.1f}% Match"):
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.subheader("✅ Your Skills")
+                    matched = category_details[category]['matched']
+                    if matched:
+                        for skill in matched:
+                            st.markdown(f'<span class="skill-badge">{skill}</span>', unsafe_allow_html=True)
+                    else:
+                        st.info("No skills in this category yet")
+                
+                with col2:
+                    st.subheader("🎯 Skills to Learn")
+                    missing = category_details[category]['missing']
+                    if missing:
+                        for skill in missing:
+                            st.markdown(f'<span class="skill-badge missing">{skill}</span>', unsafe_allow_html=True)
+                    else:
+                        st.success("All skills covered!")
+        
+        # Recommendations
+        st.header("💡 Recommendations")
+        
+        if overall_score >= 80:
+            st.success("""
+            🎉 **Excellent! You're ready for this field.**
+            - Start applying for positions
+            - Build a portfolio
+            - Network with professionals
+            - Consider advanced certifications
+            """)
+        elif overall_score >= 60:
+            st.warning("""
+            ⚡ **Good foundation! Focus on key gaps.**
+            - Complete missing core skills
+            - Work on practical projects
+            - Join communities
+            - Get relevant certifications
+            """)
+        else:
+            st.info("""
+            🚀 **Great start! Clear path ahead.**
+            - Focus on fundamentals first
+            - Take courses or bootcamps
+            - Practice with projects
+            - Find a mentor
+            """)
+        
+        # Learning resources
+        st.header("📚 Learning Resources")
+        
+        st.markdown(f"""
+        <div class="recommendation-box">
+            <h4>🎓 Recommended for {target_field}</h4>
+            <p><strong>Online Platforms:</strong></p>
+            <ul>
+                <li>Coursera - Industry certificates</li>
+                <li>Udacity - Hands-on nanodegrees</li>
+                <li>Pluralsight - Technology skills</li>
+                <li>LinkedIn Learning - Professional development</li>
+            </ul>
+            <p><strong>Top Certifications:</strong> {', '.join(skill_db[target_field]['certifications'])}</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    else:
+        # Initial state
+        st.header("🎯 How It Works")
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.markdown("""
+            <div class="skill-card">
+                <h4>1️⃣ Assessment</h4>
+                <p>Select your target field and mark your current skills across different categories.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div class="skill-card">
+                <h4>2️⃣ Analysis</h4>
+                <p>Get detailed insights into your readiness level and skill gaps for your target career.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            st.markdown("""
+            <div class="skill-card">
+                <h4>3️⃣ Roadmap</h4>
+                <p>Receive personalized recommendations and learning resources to bridge your gaps.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.info("👈 **Get started by filling out the sidebar and clicking 'Analyze My Skills'**")
+    
+    st.markdown("---")
+    
+    # Method 1: Direct simple footer (temporary fix)
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px; margin-top: 2rem;">
+        <h4>⚠️ Important Disclaimer</h4>
+        <p><strong>This platform provides general career guidance for educational purposes only.</strong></p>
+        <p>Not a substitute for professional career counseling. AI responses may contain errors.</p>
+        <p>Always verify information independently and consult qualified professionals.</p>
+        <hr style="border-color: rgba(255,255,255,0.3); margin: 1.5rem 0;">
+        <p><strong>© 2025 Career Shift Analyzer Pro</strong></p>
+        <p>👥 Developed by <strong>MS Hadianto</strong> & <strong>Faby</strong></p>
+        <p>🌟 <a href="https://github.com/mshadianto/career_shift_analyzer" style="color: #ffd700;">View on GitHub</a></p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Method 2: Try to load universal footer with error handling
+    try:
+        from utils.footer import render_universal_footer
+        # Only render if the simple footer above didn't work
+        # render_universal_footer()
+    except ImportError:
+        pass
+    except Exception as e:
+        st.error(f"Footer loading error: {e}")
 
-# =============================================================================
-# USAGE INSTRUCTIONS:
-# =============================================================================
-# 
-# Add this code at the BOTTOM of EVERY page file:
-#
-# # At the end of main.py:
-# render_universal_footer()
-#
-# # At the end of pages/1_Career_Simulation.py:
-# render_universal_footer()
-#
-# # At the end of pages/2_Skill_Gap_Analysis.py:
-# render_universal_footer()
-#
-# # At the end of pages/3_Career_Chat_Assistant.py:
-# render_universal_footer()
-#
-# =============================================================================
+if __name__ == "__main__":
+    main()
