@@ -100,41 +100,8 @@ def load_industry_data() -> Dict:
                 'skills': ['Embedded Systems', 'Sensors', 'Cloud', 'Real-time Systems'],
                 'description': 'Connected devices and distributed computing'
             }
-        },
-        'success_stories': [
-            {
-                'name': 'Sarah Chen',
-                'from': 'Accountant',
-                'to': 'AI Engineer',
-                'duration': '8 months',
-                'salary_increase': 60,
-                'story': 'Used Career Shift Analyzer to transition from finance to AI. The skill gap analysis showed me exactly what to learn. Now earning 60% more at a tech startup!',
-                'skills_learned': ['Python', 'Machine Learning', 'Data Science'],
-                'company': 'TechStart Inc.'
-            },
-            {
-                'name': 'Ahmad Rodriguez',
-                'from': 'Marketing Manager',
-                'to': 'Blockchain Developer',
-                'duration': '10 months',
-                'salary_increase': 80,
-                'story': 'The platform\'s learning roadmap guided me from zero coding experience to landing a blockchain developer role. The AI assistant was incredibly helpful!',
-                'skills_learned': ['Solidity', 'Web3', 'Smart Contracts'],
-                'company': 'CryptoSolutions'
-            },
-            {
-                'name': 'Dr. Emily Watson',
-                'from': 'Research Scientist',
-                'to': 'Quantum Computing Researcher',
-                'duration': '6 months',
-                'salary_increase': 40,
-                'story': 'Leveraged my physics background to transition into quantum computing. The industry insights helped me target the right companies.',
-                'skills_learned': ['Qiskit', 'Quantum Algorithms', 'IBM Quantum'],
-                'company': 'Quantum Dynamics'
-            }
-        ]
-    }
-
+        }
+        
 # Enhanced custom CSS with new features
 def load_custom_css():
     """Load enhanced custom CSS with modern animations and responsive design"""
