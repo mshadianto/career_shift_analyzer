@@ -648,6 +648,15 @@ def main():
     # Load custom CSS
     load_custom_css()
     
+    # ADD THIS - Apply super cool sidebar
+    try:
+        from utils.sidebar import apply_super_sidebar
+        apply_super_sidebar()
+    except ImportError:
+        st.sidebar.info("🔄 Loading enhanced sidebar...")
+    except Exception as e:
+        st.sidebar.error(f"Sidebar error: {e}")
+    
     # Add disclaimer warning at the top
     add_disclaimer_warning()
     
