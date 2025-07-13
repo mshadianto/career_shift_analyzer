@@ -134,20 +134,33 @@ def add_disclaimer_warning():
     professional career counselors for personalized advice.
     """)
 
-# Dark Purple Neon Sci-Fi Theme CSS
+# Enhanced Futuristic Theme CSS with Glassmorphism and Animations
 def load_custom_css():
-    """Load dark purple neon sci-fi themed CSS"""
+    """Load enhanced futuristic CSS with glassmorphism effects and animations"""
     st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
         
-        /* Global Dark Theme */
+        /* Global Variables */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #00d4aa 0%, #01a3a4 100%);
+            --warning-gradient: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            --cyber-glow: 0 0 20px rgba(102, 126, 234, 0.5);
+            --neon-blue: #00f0ff;
+            --neon-purple: #b347d9;
+            --neon-pink: #ff006e;
+        }
+        
+        /* Enhanced Global Dark Theme */
         .stApp {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a0e2e 25%, #2d1b3d 50%, #1a0e2e 75%, #0a0a0a 100%);
             color: #e0e0ff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
-        /* Animated Background */
+        /* Animated Background with Network Pattern */
         .stApp::before {
             content: '';
             position: fixed;
@@ -156,10 +169,10 @@ def load_custom_css():
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(139, 69, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 69, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(69, 139, 255, 0.1) 0%, transparent 50%);
-            animation: nebula 10s ease-in-out infinite;
+                radial-gradient(circle at 20% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(179, 71, 217, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+            animation: nebula 15s ease-in-out infinite;
             pointer-events: none;
             z-index: -1;
         }
@@ -169,20 +182,20 @@ def load_custom_css():
             50% { opacity: 1; }
         }
         
-        /* Neon Header */
+        /* Futuristic Header with Enhanced Animation */
         .main-header {
             text-align: center;
             padding: 4rem 2rem;
-            background: linear-gradient(135deg, rgba(139, 69, 255, 0.2), rgba(255, 69, 255, 0.2));
-            border: 2px solid #8b45ff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 240, 255, 0.3);
             border-radius: 20px;
             margin-bottom: 3rem;
             box-shadow: 
-                0 0 30px rgba(139, 69, 255, 0.5),
-                inset 0 0 30px rgba(139, 69, 255, 0.1);
+                0 0 30px rgba(0, 240, 255, 0.5),
+                inset 0 0 30px rgba(0, 240, 255, 0.1);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
         }
         
         .main-header::before {
@@ -192,7 +205,7 @@ def load_custom_css():
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(139, 69, 255, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.1), transparent);
             animation: scan 4s linear infinite;
         }
         
@@ -204,127 +217,218 @@ def load_custom_css():
         .main-header h1 {
             font-family: 'Orbitron', monospace;
             font-weight: 900;
-            text-shadow: 
-                0 0 10px #8b45ff,
-                0 0 20px #8b45ff,
-                0 0 30px #8b45ff;
-            animation: glow 2s ease-in-out infinite alternate;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #00f0ff, #b347d9, #ff006e, #00f0ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         @keyframes glow {
-            from { text-shadow: 0 0 10px #8b45ff, 0 0 20px #8b45ff, 0 0 30px #8b45ff; }
-            to { text-shadow: 0 0 20px #8b45ff, 0 0 30px #8b45ff, 0 0 40px #8b45ff; }
+            from { 
+                text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+                filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.3));
+            }
+            to { 
+                text-shadow: 0 0 30px rgba(179, 71, 217, 0.8), 0 0 40px rgba(255, 0, 110, 0.6);
+                filter: drop-shadow(0 0 20px rgba(179, 71, 217, 0.5));
+            }
         }
         
-        /* Neon Cards */
-        .neon-card {
-            background: linear-gradient(145deg, rgba(13, 13, 13, 0.9), rgba(26, 14, 46, 0.9));
-            border: 1px solid #8b45ff;
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 1rem 0;
-            box-shadow: 
-                0 0 20px rgba(139, 69, 255, 0.3),
-                inset 0 0 20px rgba(139, 69, 255, 0.05);
-            transition: all 0.3s ease;
+        /* Rotating Network Visualization */
+        .hero-network {
             position: relative;
+            width: 100%;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(0, 17, 34, 0.8) 0%, rgba(0, 8, 17, 0.9) 70%, rgba(0, 0, 0, 0.95) 100%);
+            border-radius: 20px;
             overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 15px 50px rgba(0, 240, 255, 0.3);
             backdrop-filter: blur(10px);
         }
         
-        .neon-card::before {
+        .network-visualization {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><radialGradient id="centerGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:%23ffffff;stop-opacity:1" /><stop offset="50%" style="stop-color:%2300f0ff;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%23001122;stop-opacity:0.2" /></radialGradient><filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><circle cx="200" cy="200" r="150" fill="none" stroke="%2300f0ff" stroke-width="1" opacity="0.6"/><circle cx="200" cy="200" r="100" fill="none" stroke="%23b347d9" stroke-width="1" opacity="0.8"/><circle cx="200" cy="200" r="50" fill="url(%23centerGlow)" opacity="0.9"/><g filter="url(%23glow)"><circle cx="200" cy="80" r="8" fill="%2300f0ff" opacity="0.9"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></circle><circle cx="320" cy="200" r="6" fill="%23ff006e" opacity="0.8"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="200" cy="320" r="7" fill="%23b347d9" opacity="0.9"><animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/></circle><circle cx="80" cy="200" r="5" fill="%2300ff88" opacity="0.7"><animate attributeName="opacity" values="0.4;0.8;0.4" dur="1.8s" repeatCount="indefinite"/></circle><line x1="200" y1="200" x2="200" y2="80" stroke="%2300f0ff" stroke-width="1" opacity="0.4"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite"/></line><line x1="200" y1="200" x2="320" y2="200" stroke="%23ff006e" stroke-width="1" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.5s" repeatCount="indefinite"/></line><line x1="200" y1="200" x2="200" y2="320" stroke="%23b347d9" stroke-width="1" opacity="0.4"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.8s" repeatCount="indefinite"/></line><line x1="200" y1="200" x2="80" y2="200" stroke="%2300ff88" stroke-width="1" opacity="0.4"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.2s" repeatCount="indefinite"/></line></g></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: rotateNetwork 20s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
+        }
+        
+        @keyframes rotateNetwork {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .network-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 240, 255, 0.1) 60%, rgba(179, 71, 217, 0.15) 80%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Enhanced Glassmorphism Cards */
+        .glass-card, .neon-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card:hover, .neon-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 240, 255, 0.3);
+            border-color: rgba(0, 240, 255, 0.5);
+        }
+        
+        .glass-card::before, .neon-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 69, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.5s;
         }
         
-        .neon-card:hover::before {
+        .glass-card:hover::before, .neon-card:hover::before {
             left: 100%;
         }
         
-        .neon-card:hover {
-            transform: translateY(-5px);
-            border-color: #ff45ff;
-            box-shadow: 
-                0 10px 30px rgba(255, 69, 255, 0.4),
-                inset 0 0 30px rgba(255, 69, 255, 0.1);
-        }
-        
-        /* Stat Cards */
-        .stat-card {
-            background: linear-gradient(135deg, rgba(139, 69, 255, 0.2), rgba(255, 69, 255, 0.2));
-            border: 1px solid #8b45ff;
-            border-radius: 15px;
-            padding: 2rem 1.5rem;
+        /* Enhanced Metric Cards */
+        .metric-card, .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
             text-align: center;
-            margin: 1rem 0.5rem;
-            box-shadow: 0 0 25px rgba(139, 69, 255, 0.4);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin: 1rem 0.5rem;
         }
         
-        .stat-card:hover {
-            transform: scale(1.05) rotateY(5deg);
-            border-color: #ff45ff;
-            box-shadow: 0 0 35px rgba(255, 69, 255, 0.6);
+        .metric-card:hover, .stat-card:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .stat-card h3 {
             font-family: 'Orbitron', monospace;
-            color: #ff45ff;
-            text-shadow: 0 0 10px #ff45ff;
+            color: #00f0ff;
+            text-shadow: 0 0 10px #00f0ff;
         }
         
-        /* Feature Cards */
+        .metric-label {
+            color: #b0b3b8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Hero Container with Glassmorphism */
+        .hero-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        /* Enhanced Feature Cards */
         .feature-card {
-            background: linear-gradient(145deg, rgba(13, 13, 13, 0.8), rgba(26, 14, 46, 0.8));
-            border: 1px solid #8b45ff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 15px;
             padding: 2rem;
             margin: 2rem 0;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(139, 69, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
         
         .feature-card:hover {
             transform: translateY(-10px);
-            border-color: #ff45ff;
-            box-shadow: 0 20px 40px rgba(255, 69, 255, 0.3);
+            border-color: rgba(179, 71, 217, 0.5);
+            box-shadow: 0 20px 40px rgba(179, 71, 217, 0.3);
         }
         
-        /* Version Info */
-        .version-info {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(139, 69, 255, 0.2);
-            border: 1px solid #8b45ff;
-            border-radius: 20px;
-            padding: 0.8rem 1.5rem;
-            font-family: 'Orbitron', monospace;
-            color: #8b45ff;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(139, 69, 255, 0.3);
-            text-shadow: 0 0 5px #8b45ff;
+        /* Enhanced Industry Cards */
+        .industry-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         
-        /* Success Stories */
+        .industry-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 0, 110, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 0, 110, 0.3);
+        }
+        
+        /* Success Stories with Enhanced Design */
         .success-story {
-            background: linear-gradient(145deg, rgba(13, 13, 13, 0.9), rgba(0, 40, 20, 0.9));
-            border: 1px solid #00ff88;
+            background: rgba(0, 212, 170, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 170, 0.3);
             border-radius: 15px;
             padding: 2rem;
             margin: 2rem 0;
-            border-left: 4px solid #00ff88;
+            border-left: 4px solid #00d4aa;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
             transition: all 0.3s ease;
         }
@@ -334,63 +438,64 @@ def load_custom_css():
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
         }
         
-        /* Industry Grid */
-        .industry-item {
-            background: linear-gradient(145deg, rgba(13, 13, 13, 0.8), rgba(26, 14, 46, 0.8));
-            border: 1px solid #8b45ff;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(139, 69, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .industry-item:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #ff45ff;
-            box-shadow: 0 20px 40px rgba(255, 69, 255, 0.3);
-        }
-        
-        /* Chart Container */
+        /* Enhanced Chart Container */
         .chart-container {
-            background: linear-gradient(145deg, rgba(13, 13, 13, 0.9), rgba(26, 14, 46, 0.9));
-            border: 1px solid #8b45ff;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 0 25px rgba(139, 69, 255, 0.2);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
             margin: 2rem 0;
-            backdrop-filter: blur(10px);
         }
         
-        /* Buttons */
+        /* Enhanced Buttons */
         .stButton > button {
-            background: linear-gradient(135deg, #8b45ff, #ff45ff);
+            background: linear-gradient(135deg, #00f0ff, #b347d9);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 0.75rem 2rem;
             font-family: 'Exo 2', sans-serif;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(139, 69, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            position: relative;
+            overflow: hidden;
         }
         
         .stButton > button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 69, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(179, 71, 217, 0.5);
         }
         
-        /* Sidebar */
+        /* Version Info with Glassmorphism */
+        .version-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Orbitron', monospace;
+            color: #00f0ff;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            text-shadow: 0 0 5px #00f0ff;
+        }
+        
+        /* Enhanced Sidebar */
         .css-1d391kg {
-            background: linear-gradient(180deg, rgba(13, 13, 13, 0.95), rgba(26, 14, 46, 0.95));
-            border-right: 1px solid #8b45ff;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(0, 240, 255, 0.1);
         }
         
-        /* Text Elements */
+        /* Text Elements Enhancement */
         h1, h2, h3, h4 {
             font-family: 'Orbitron', monospace;
             color: #e0e0ff;
@@ -401,10 +506,46 @@ def load_custom_css():
             color: #c0c0ff;
         }
         
-        /* Responsive */
+        /* Loading Animation */
+        .loading-spinner {
+            border: 3px solid rgba(0, 240, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #00f0ff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Enhanced Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 240, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 240, 255, 0.8);
+        }
+        
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .main-header { padding: 2rem 1rem; }
-            .neon-card, .stat-card { margin: 1rem 0; padding: 1.5rem; }
+            .main-header h1 { font-size: 2.5rem; }
+            .hero-network { height: 250px; }
+            .network-visualization { width: 200px; height: 200px; }
+            .glass-card, .neon-card { padding: 1rem; }
             .version-info { position: relative; top: auto; right: auto; margin: 1rem 0; }
         }
     </style>
@@ -452,9 +593,9 @@ def create_advanced_bubble_chart(df: pd.DataFrame) -> go.Figure:
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#e0e0ff', family="Exo 2"),
-        title_font=dict(size=18, color='#ff45ff', family="Orbitron"),
-        xaxis=dict(gridcolor='rgba(139, 69, 255, 0.2)'),
-        yaxis=dict(gridcolor='rgba(139, 69, 255, 0.2)')
+        title_font=dict(size=18, color='#00f0ff', family="Orbitron"),
+        xaxis=dict(gridcolor='rgba(0, 240, 255, 0.2)'),
+        yaxis=dict(gridcolor='rgba(0, 240, 255, 0.2)')
     )
     
     return fig
@@ -467,7 +608,7 @@ def create_salary_comparison_chart(df: pd.DataFrame) -> go.Figure:
         name='Min Salary',
         x=df['Industry'],
         y=df['Min Salary'],
-        marker_color='rgba(139, 69, 255, 0.7)',
+        marker_color='rgba(0, 240, 255, 0.7)',
         text=df['Min Salary'],
         textposition='auto'
     ))
@@ -476,7 +617,7 @@ def create_salary_comparison_chart(df: pd.DataFrame) -> go.Figure:
         name='Max Salary',
         x=df['Industry'],
         y=df['Max Salary'],
-        marker_color='rgba(255, 69, 255, 0.7)',
+        marker_color='rgba(179, 71, 217, 0.7)',
         text=df['Max Salary'],
         textposition='auto'
     ))
@@ -490,9 +631,9 @@ def create_salary_comparison_chart(df: pd.DataFrame) -> go.Figure:
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#e0e0ff', family="Exo 2"),
-        title_font=dict(color='#ff45ff', family="Orbitron"),
-        xaxis=dict(tickangle=45, gridcolor='rgba(139, 69, 255, 0.2)'),
-        yaxis=dict(gridcolor='rgba(139, 69, 255, 0.2)')
+        title_font=dict(color='#00f0ff', family="Orbitron"),
+        xaxis=dict(tickangle=45, gridcolor='rgba(0, 240, 255, 0.2)'),
+        yaxis=dict(gridcolor='rgba(0, 240, 255, 0.2)')
     )
     
     return fig
@@ -513,12 +654,12 @@ def create_skill_radar_chart() -> go.Figure:
     
     fig.add_trace(go.Scatterpolar(
         r=ai_scores, theta=categories, fill='toself', name='AI/ML',
-        line_color='rgb(139, 69, 255)', fillcolor='rgba(139, 69, 255, 0.3)'
+        line_color='rgb(0, 240, 255)', fillcolor='rgba(0, 240, 255, 0.3)'
     ))
     
     fig.add_trace(go.Scatterpolar(
         r=blockchain_scores, theta=categories, fill='toself', name='Blockchain',
-        line_color='rgb(255, 69, 255)', fillcolor='rgba(255, 69, 255, 0.3)'
+        line_color='rgb(179, 71, 217)', fillcolor='rgba(179, 71, 217, 0.3)'
     ))
     
     fig.add_trace(go.Scatterpolar(
@@ -527,11 +668,11 @@ def create_skill_radar_chart() -> go.Figure:
     ))
     
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True, range=[0, 10], gridcolor='rgba(139, 69, 255, 0.2)')),
+        polar=dict(radialaxis=dict(visible=True, range=[0, 10], gridcolor='rgba(0, 240, 255, 0.2)')),
         showlegend=True, title="🎯 Industry Skill Requirements Comparison", height=500,
         plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#e0e0ff', family="Exo 2"),
-        title_font=dict(color='#ff45ff', family="Orbitron")
+        title_font=dict(color='#00f0ff', family="Orbitron")
     )
     
     return fig
@@ -566,7 +707,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Enhanced Header
+    # Enhanced Header with Network Visualization
     current_time = datetime.now().strftime("%H:%M UTC")
     st.markdown(f"""
     <div class="main-header">
@@ -587,12 +728,20 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Hero section
+    # Add Network Visualization Hero Section
+    st.markdown("""
+    <div class="hero-network">
+        <div class="network-visualization"></div>
+        <div class="network-overlay"></div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Hero section with enhanced glassmorphism
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("""
-        <div class="neon-card">
-            <h3 style="color: #ff45ff; text-align: center; margin-bottom: 1.5rem;">🎯 Transform Your Career Journey</h3>
+        <div class="glass-card">
+            <h3 style="color: #00f0ff; text-align: center; margin-bottom: 1.5rem;">🎯 Transform Your Career Journey</h3>
             <p style="text-align: center; line-height: 1.8; margin-bottom: 2rem;">
                 Discover high-growth opportunities in <strong>AI, Blockchain, Quantum Computing, 
                 Renewable Energy, Biotech,</strong> and more. Get personalized insights with 
@@ -609,13 +758,13 @@ def main():
             if st.button("💬 AI Assistant", type="secondary", use_container_width=True):
                 st.info("🚧 Feature coming soon!")
     
-    # Quick stats
+    # Quick stats with enhanced metrics
     st.markdown("### 📊 Live Industry Insights")
     df = process_trend_data()
     
     col1, col2, col3, col4 = st.columns(4)
     
-    # Display top 4 industries
+    # Display top 4 industries with enhanced styling
     top_industries = ['Artificial Intelligence', 'Blockchain & Web3', 'Cybersecurity', 'Quantum Computing']
     
     for idx, industry in enumerate(top_industries):
@@ -625,14 +774,14 @@ def main():
             st.markdown(f"""
             <div class="stat-card">
                 <h3>{emoji} {industry.split(' ')[0]}</h3>
-                <p style="font-size: 1.8em; font-weight: bold; color: #ff45ff;">+{data['Job Growth (%)']}%</p>
-                <p>annual growth</p>
+                <p class="metric-number">+{data['Job Growth (%)']}%</p>
+                <p class="metric-label">annual growth</p>
                 <p>${data['Min Salary']:.0f}K-${data['Max Salary']:.0f}K</p>
                 <p style="font-size: 0.9em; opacity: 0.9;">🔥 {data['Remote Friendly (%)']}% Remote</p>
             </div>
             """, unsafe_allow_html=True)
     
-    # Features section
+    # Features section with enhanced cards
     st.markdown("### ✨ Platform Features")
     
     col1, col2, col3 = st.columns(3)
@@ -659,15 +808,15 @@ def main():
         with [col1, col2, col3][idx]:
             st.markdown(f"""
             <div class="feature-card">
-                <h4 style="color: #ff45ff; margin-bottom: 1rem;">{feature['title']}</h4>
+                <h4 style="color: #00f0ff; margin-bottom: 1rem;">{feature['title']}</h4>
                 <p style="line-height: 1.6; margin-bottom: 1.5rem;">{feature['desc']}</p>
                 <div>
-                    {' '.join([f'<span style="background: rgba(139, 69, 255, 0.2); color: #8b45ff; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8em; margin-right: 0.5rem;">{tag}</span>' for tag in feature['tags']])}
+                    {' '.join([f'<span style="background: rgba(0, 240, 255, 0.2); color: #00f0ff; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8em; margin-right: 0.5rem;">{tag}</span>' for tag in feature['tags']])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
     
-    # Visualizations
+    # Visualizations with enhanced containers
     st.markdown("### 📈 Interactive Analytics")
     
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
@@ -689,7 +838,7 @@ def main():
         st.plotly_chart(salary_fig, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # Success stories
+    # Success stories with enhanced styling
     st.markdown("### 🌟 Success Stories")
     
     success_stories = industry_data['success_stories']
@@ -708,17 +857,17 @@ def main():
                 <span style="background: #00ff88; color: black; padding: 0.3rem 0.8rem; border-radius: 15px; margin-right: 0.5rem;">
                     ✅ {story['duration']}
                 </span>
-                <span style="background: #ff45ff; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; margin-right: 0.5rem;">
+                <span style="background: #b347d9; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; margin-right: 0.5rem;">
                     💰 +{story['salary_increase']}%
                 </span>
-                <span style="background: #8b45ff; color: white; padding: 0.3rem 0.8rem; border-radius: 15px;">
+                <span style="background: #00f0ff; color: black; padding: 0.3rem 0.8rem; border-radius: 15px;">
                     🎓 {len(story['skills_learned'])} skills
                 </span>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
-    # Industry overview
+    # Industry overview with enhanced cards
     st.markdown("### 🌟 Industry Overview")
     
     industries = industry_data['industries']
@@ -740,7 +889,7 @@ def main():
             
             st.markdown(f"""
             <div class="industry-item">
-                <h4 style="color: #ff45ff; margin-bottom: 1rem;">{emoji} {industry}</h4>
+                <h4 style="color: #00f0ff; margin-bottom: 1rem;">{emoji} {industry}</h4>
                 <p style="font-size: 0.9em; margin-bottom: 1rem;">{data['description']}</p>
                 <div style="text-align: left;">
                     <p><strong>Growth:</strong> +{data['growth']}%</p>
@@ -756,7 +905,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # Quick actions
+    # Quick actions with enhanced buttons
     st.markdown("### 🎯 Quick Actions")
     
     col1, col2, col3, col4 = st.columns(4)
@@ -777,16 +926,27 @@ def main():
         if st.button("📊 Deep Dive", use_container_width=True):
             st.info("💎 Premium feature coming soon!")
     
-    # Footer
+    # Enhanced Footer
     st.markdown("""
-    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(139, 69, 255, 0.1), rgba(255, 69, 255, 0.1)); 
-         border: 1px solid #8b45ff; border-radius: 15px; margin-top: 3rem;">
-        <h4 style="color: #ff45ff;">⚠️ Important Disclaimer</h4>
-        <p><strong>Educational purposes only. Not professional career counseling.</strong></p>
-        <p>AI responses may contain errors. Verify information independently.</p>
-        <hr style="border-color: rgba(139, 69, 255, 0.3); margin: 1.5rem 0;">
-        <p><strong>© 2025 Career Shift Analyzer Pro</strong></p>
-        <p>👥 Developed by <strong>MS Hadianto</strong> & <strong>Faby</strong></p>
+    <div style="text-align: center; padding: 3rem 2rem; background: rgba(255, 255, 255, 0.03); 
+         backdrop-filter: blur(20px); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 20px; margin-top: 3rem;">
+        <h4 style="color: #00f0ff; margin-bottom: 1.5rem;">⚠️ Important Disclaimer</h4>
+        <p style="margin-bottom: 1rem;"><strong>Educational purposes only. Not professional career counseling.</strong></p>
+        <p style="margin-bottom: 2rem;">AI responses may contain errors. Verify information independently.</p>
+        <hr style="border-color: rgba(0, 240, 255, 0.3); margin: 2rem 0;">
+        <p style="font-size: 1.1em; margin-bottom: 0.5rem;"><strong>© 2025 Career Shift Analyzer Pro</strong></p>
+        <p style="opacity: 0.8;">👥 Developed by <strong>MS Hadianto</strong> & <strong>Faby</strong></p>
+        <div style="margin-top: 2rem;">
+            <span style="background: rgba(0, 240, 255, 0.2); color: #00f0ff; padding: 0.5rem 1rem; border-radius: 20px; margin: 0 0.5rem;">
+                🚀 Future Ready
+            </span>
+            <span style="background: rgba(179, 71, 217, 0.2); color: #b347d9; padding: 0.5rem 1rem; border-radius: 20px; margin: 0 0.5rem;">
+                🤖 AI-Powered
+            </span>
+            <span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 0.5rem 1rem; border-radius: 20px; margin: 0 0.5rem;">
+                ✨ Enhanced UI
+            </span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
